@@ -33,9 +33,7 @@ public class MateriaData {
             ps.setString(1, materia.getNombre());
             ps.setInt(2, materia.getAnio());
             ps.setBoolean(3, materia.isActivo());
-
             ps.executeUpdate();
-
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 materia.setIdMateria(rs.getInt(1));
@@ -55,49 +53,46 @@ public class MateriaData {
     }
     
     public List<Materia> obtenerMaterias() {
-        ArrayList<Materia> materia = new ArrayList<>();
-
+        ArrayList<Materia> todasLasMaterias = new ArrayList<>();
         try {
             String sql = "SELECT * FROM materia WHERE activo = 1;";
             PreparedStatement ps = con.prepareStatement(sql);
-
             ResultSet resultSet = ps.executeQuery();
-            Materia mate;
+            Materia unaMateria;
             while (resultSet.next()) {
-                mate = new Materia();
-                mate.setNombre(resultSet.getString("Nombre"));
-                mate.setAnio(resultSet.getInt("anio"));
-                mate.setActivo(resultSet.getBoolean("Activo"));
-                mate.setIdMateria(resultSet.getInt("idMateria"));                
-
-                materia.add(mate);
+                unaMateria = new Materia();
+                unaMateria.setNombre(resultSet.getString("Nombre"));
+                unaMateria.setAnio(resultSet.getInt("anio"));
+                unaMateria.setActivo(resultSet.getBoolean("Activo"));
+                unaMateria.setIdMateria(resultSet.getInt("idMateria"));
+                todasLasMaterias.add(unaMateria);
             }
             ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al obtener materia");
         }
-        return materia;
+        return todasLasMaterias;
     }
     
     public Materia obtenerMateriaXId(int id) {
-        Materia mate = null;
+        Materia unaMateria = null;
         try {
             String sql = "SELECT * FROM materia WHERE idMateria = ? AND activo = 1;";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                mate = new Materia();
-                mate.setNombre(resultSet.getString("Nombre"));
-                mate.setAnio(resultSet.getInt("anio"));
-                mate.setActivo(resultSet.getBoolean("Activo"));
-                mate.setIdMateria(resultSet.getInt("idMateria"));                
+                unaMateria = new Materia();
+                unaMateria.setNombre(resultSet.getString("Nombre"));
+                unaMateria.setAnio(resultSet.getInt("anio"));
+                unaMateria.setActivo(resultSet.getBoolean("Activo"));
+                unaMateria.setIdMateria(resultSet.getInt("idMateria"));                
             }
             ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al obtener materia");
         }
-        return mate;
+        return unaMateria;
     }
     
     public boolean borrarMateria(int id) {
