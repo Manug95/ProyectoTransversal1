@@ -15,8 +15,11 @@ import proyectogrupo6.Modelos.Cursada;
 import proyectogrupo6.Modelos.Materia;
 
 /**
- *
- * @author Valentina
+ * @author Grupo 6 
+ *  Fernandez Valentina
+ *  Amieva Agustina
+ *  Romero Jorge
+ *  Gutierrez Manuel
  */
 public class CursadaData {
 
@@ -196,7 +199,7 @@ public class CursadaData {
         return actualizado;
     }
 
-    //devuelve listado de alumnos en base a materia
+    //devuelve listado de alumnos inscriptos en base a materia
     public List<Alumno> obtenerAlumnosInscriptos(Materia materia) {
 
         ArrayList<Alumno> alumnos = new ArrayList<>();
@@ -218,8 +221,36 @@ public class CursadaData {
         }
         return alumnos;
     }
+    
+    //Devuelve listado de alumnos NO inscriptos en materia
+    public List<Alumno> obtenerAlumnosNoInscriptos(Materia materia){
+        Alumno alumno;
+        ArrayList<Alumno> alumnos = new ArrayList<>();
+        ArrayList<Alumno> aInscriptos = (ArrayList) obtenerAlumnosInscriptos(materia);
+        String sql = "SELECT * "
+                + "FROM alumno "
+                + "WHERE activo = 1";
+        try {
+            for (Alumno aInscripto : aInscriptos) {
+                sql = sql.concat(" AND idAlumno != ?");
+            }
+            PreparedStatement ps = con.prepareStatement(sql);
+            for (int i = 0; i < aInscriptos.size(); i++) {
+                ps.setInt(i+1, aInscriptos.get(i).getIdAlumno());
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                alumno = ad.obtenerAlumnoPorId(rs.getInt("idAlumno"));
+                alumnos.add(alumno);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex);
+        }
+        return alumnos;
+    }
 
-    //Devuelve listado de materias en base a alumno
+    //Devuelve listado de materias Inscriptas en base a alumno
     public List<Materia> obtenerMateriasInscriptas(Alumno alumno) {
 
         ArrayList<Materia> materias = new ArrayList<>();
@@ -233,7 +264,7 @@ public class CursadaData {
             ResultSet rs = ps.executeQuery();
             Materia materia;
             while (rs.next()) {
-                materia = md.ObtenerMateriaPorId(rs.getInt("idMateria"));
+                materia = md.obtenerMateriaXId(rs.getInt("idMateria"));
                 materias.add(materia);
             }
             ps.close();
@@ -244,29 +275,36 @@ public class CursadaData {
         return materias;
     }
     
-    //devuelve listado de materias no inscriptas en base a alumno
+        //devuelve listado de materias NO inscriptas en base a alumno
     public List<Materia> obtenerMateriasNoInscriptas(Alumno alumno){
         
         ArrayList<Materia> materias = (ArrayList) obtenerMateriasInscriptas(alumno);
+        ArrayList<Materia> materiasNI = new ArrayList<>();
+        int ind = 1;
         String sql = "SELECT * " 
                    + "FROM materia "
-                   + "WHERE idMateria != ? AND activo = 1";
+                   + "WHERE activo = 1";
 
-            materias.forEach((m)->{
-                try {
-                    PreparedStatement ps = con.prepareStatement(sql);
-                    ps.setInt(1, m.getIdMateria());
-                    ResultSet rs = ps.executeQuery();
-                    if (rs.next()){
-                        Materia materia = md.obtenerMateriaPorId(rs.getInt("idMateria"));
-                        sql.concat(" AND idMateria != ?");
-                        //ya me perdi :D
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(CursadaData.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-        
+        try {
+            for (Materia materia : materias) {
+                sql = sql.concat(" AND idMateria != ?");
+            }
+            PreparedStatement ps = con.prepareStatement(sql);
+            for (Materia materia : materias) {
+                ps.setInt(ind, materia.getIdMateria());
+                ind++;
+            }
+            ResultSet rs = ps.executeQuery();
+            Materia materia;
+            while (rs.next()){
+                materia = md.obtenerMateriaXId(rs.getInt("idMateria"));
+                materiasNI.add(materia);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex);
+        } 
+        return materiasNI;
     }
 
 }
