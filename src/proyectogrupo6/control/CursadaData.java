@@ -200,6 +200,7 @@ public class CursadaData {
     }
 
     //devuelve listado de alumnos inscriptos en base a materia
+    
     public List<Alumno> obtenerAlumnosInscriptos(Materia materia) {
 
         ArrayList<Alumno> alumnos = new ArrayList<>();
