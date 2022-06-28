@@ -16,7 +16,7 @@ public class Conexion {
     public Conexion() {
         try{
             Class.forName("org.mariadb.jdbc.Driver");
-            JOptionPane.showMessageDialog(null, "Driver de Conexión Cargado!");
+            //JOptionPane.showMessageDialog(null, "Driver de Conexión Cargado!");
         }catch (ClassNotFoundException cnfe) {
             JOptionPane.showMessageDialog(null, "Error al Cargar Driver de Conexión!");
         }
@@ -30,7 +30,7 @@ public class Conexion {
                     .getConnection(url + "?useLegacyDatetimeCode=false&serverTimezone=UTC"
                         + "&user=" + usuario + "&password=" + password);
             }
-            JOptionPane.showMessageDialog(null, "Conexión Exitosa a la Base de Datos!");
+            //JOptionPane.showMessageDialog(null, "Conexión Exitosa a la Base de Datos!");
         } catch(SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Error al Conectarse a la Base de Datos!");
         }
