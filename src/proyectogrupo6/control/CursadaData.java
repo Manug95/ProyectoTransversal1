@@ -25,17 +25,20 @@ public class CursadaData {
 
     //                                              ATRIBUTOS
     //---------------------------------------------------------------------------------------------------------------
+    
     private Connection con = null;
     private AlumnoData ad;
     private MateriaData md;
 
     //                                  CONSTRUCTORES, GETTERS Y SETTERS
     //---------------------------------------------------------------------------------------------------------------
+    
     public CursadaData(Conexion con) {
         this.con = con.getConexion();
         ad = new AlumnoData(con);
         md = new MateriaData(con);
     }
+    
     //                                          METODOS PUBLICOS
     //---------------------------------------------------------------------------------------------------------------
 
@@ -204,16 +207,20 @@ public class CursadaData {
     public List<Alumno> obtenerAlumnosInscriptos(Materia materia) {
 
         ArrayList<Alumno> alumnos = new ArrayList<>();
-        String sql = "SELECT idAlumno "
-                + "FROM cursada "
-                + "WHERE idMateria = ?";
+        String sql = "SELECT alumno.idAlumno, nombre, dni "
+                   + "FROM cursada, alumno "
+                   + "WHERE idMateria = ? AND cursada.idAlumno = alumno.idAlumno";
+        
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, materia.getIdMateria());
             ResultSet rs = ps.executeQuery();
             Alumno alumno;
             while (rs.next()) {
-                alumno = ad.obtenerAlumnoPorId(rs.getInt("idAlumno"));
+                alumno = new Alumno();
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setDni(rs.getInt("dni"));
+                alumno.setIdAlumno(rs.getInt("idalumno"));
                 alumnos.add(alumno);
             }
             ps.close();
@@ -228,17 +235,13 @@ public class CursadaData {
         Alumno alumno;
         ArrayList<Alumno> alumnos = new ArrayList<>();
         ArrayList<Alumno> aInscriptos = (ArrayList) obtenerAlumnosInscriptos(materia);
-        String sql = "SELECT * "
+        String sql = "SELECT idAlumno " //(o *)
                 + "FROM alumno "
-                + "WHERE activo = 1";
+                + "WHERE idAlumno NOT IN (SELECT idAlumno FROM cursada WHERE idMateria = ?)";
+        
         try {
-            for (Alumno aInscripto : aInscriptos) {
-                sql = sql.concat(" AND idAlumno != ?");
-            }
             PreparedStatement ps = con.prepareStatement(sql);
-            for (int i = 0; i < aInscriptos.size(); i++) {
-                ps.setInt(i+1, aInscriptos.get(i).getIdAlumno());
-            }
+            ps.setInt(1, materia.getIdMateria());
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 alumno = ad.obtenerAlumnoPorId(rs.getInt("idAlumno"));
@@ -255,17 +258,20 @@ public class CursadaData {
     public List<Materia> obtenerMateriasInscriptas(Alumno alumno) {
 
         ArrayList<Materia> materias = new ArrayList<>();
-        String sql = "SELECT idMateria "
-                + "FROM cursada "
-                + "WHERE idAlumno = ?"; //teniendo en cuenta que no deberian haber repetidos, si no usar DISTINCT
-
+        String sql = "SELECT materia.idMateria, materia.nombre, materia.anio "
+                + "FROM cursada, materia "
+                + "WHERE idAlumno = ? AND cursada.idMateria = materia.idMateria";
+        
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, alumno.getIdAlumno());
             ResultSet rs = ps.executeQuery();
             Materia materia;
             while (rs.next()) {
-                materia = md.obtenerMateriaXId(rs.getInt("idMateria"));
+                materia = new Materia();
+                materia.setAnio(rs.getInt("anio"));
+                materia.setIdMateria(rs.getInt("idMateria"));
+                materia.setNombre(rs.getString("nombre"));
                 materias.add(materia);
             }
             ps.close();
@@ -282,19 +288,13 @@ public class CursadaData {
         ArrayList<Materia> materias = (ArrayList) obtenerMateriasInscriptas(alumno);
         ArrayList<Materia> materiasNI = new ArrayList<>();
         int ind = 1;
-        String sql = "SELECT * " 
+        String sql = "SELECT idMateria " 
                    + "FROM materia "
-                   + "WHERE activo = 1";
+                   + "WHERE idMateria NOT IN (SELECT idMateria FROM cursada WHERE idAlumno = ?)";
 
         try {
-            for (Materia materia : materias) {
-                sql = sql.concat(" AND idMateria != ?");
-            }
             PreparedStatement ps = con.prepareStatement(sql);
-            for (Materia materia : materias) {
-                ps.setInt(ind, materia.getIdMateria());
-                ind++;
-            }
+            ps.setInt(1, alumno.getIdAlumno());
             ResultSet rs = ps.executeQuery();
             Materia materia;
             while (rs.next()){
