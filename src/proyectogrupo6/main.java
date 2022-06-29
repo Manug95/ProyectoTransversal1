@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import proyectogrupo6.Modelos.Alumno;
 import proyectogrupo6.Modelos.Cursada;
 import proyectogrupo6.Modelos.Materia;
+import proyectogrupo6.Vistas.Menu;
 import proyectogrupo6.control.AlumnoData;
 import proyectogrupo6.control.Conexion;
 import proyectogrupo6.control.CursadaData;
@@ -23,17 +24,44 @@ import proyectogrupo6.control.MateriaData;
 public class main {
 
     public static void main(String[] args) {
-        Conexion conexion = new Conexion();
+           /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        Menu inicio = new Menu();
+        inicio.setVisible(true);
         
-        AlumnoData ad = new AlumnoData(conexion);
-        MateriaData md = new MateriaData(conexion);
-        CursadaData cd = new CursadaData(conexion);
         
-        //nuevos alumnos
-        Alumno valentina = new Alumno("Valentina", "Fernandez", LocalDate.of(2000, Month.JANUARY, 1), 12345678, true);
-        Alumno jorge = new Alumno("Jorge", "Romero", LocalDate.of(2001, Month.FEBRUARY, 1), 87654321, true);
-        Alumno manuel = new Alumno("Manuel", "Gutierrez", LocalDate.of(2002, Month.MARCH, 1), 12387654, true);
-        
+//        Conexion conexion = new Conexion();
+//        
+//        AlumnoData ad = new AlumnoData(conexion);
+//        MateriaData md = new MateriaData(conexion);
+//        CursadaData cd = new CursadaData(conexion);
+//        
+//        //nuevos alumnos
+//        Alumno valentina = new Alumno("Valentina", "Fernandez", LocalDate.of(2000, Month.JANUARY, 1), 12345678, true);
+//        Alumno jorge = new Alumno("Jorge", "Romero", LocalDate.of(2001, Month.FEBRUARY, 1), 87654321, true);
+//        Alumno manuel = new Alumno("Manuel", "Gutierrez", LocalDate.of(2002, Month.MARCH, 1), 12387654, true);
+//        
         /*if(ad.agregarAlumno(manuel)){
             JOptionPane.showMessageDialog(null, "Alumno Agregado con Éxito!");
         }
@@ -105,12 +133,12 @@ public class main {
         }
         */
         
-        Alumno alumno = ad.obtenerAlumnoPorId(4);
-        //ArrayList<Materia> materiasI = (ArrayList<Materia>)cd.obtenerMateriasInscriptas(alumno);
-        ArrayList<Materia> materiasNI = (ArrayList<Materia>)cd.obtenerMateriasNoInscriptas(alumno);
-        for(Materia m : materiasNI){
-            System.out.println(m);
-        }
+//        Alumno alumno = ad.obtenerAlumnoPorId(4);
+//        //ArrayList<Materia> materiasI = (ArrayList<Materia>)cd.obtenerMateriasInscriptas(alumno);
+//        ArrayList<Materia> materiasNI = (ArrayList<Materia>)cd.obtenerMateriasNoInscriptas(alumno);
+//        for(Materia m : materiasNI){
+//            System.out.println(m);
+//        }
         
     }
 
