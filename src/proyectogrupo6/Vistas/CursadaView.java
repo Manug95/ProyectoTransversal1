@@ -1,21 +1,86 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package proyectogrupo6.Vistas;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import proyectogrupo6.Modelos.Alumno;
+import proyectogrupo6.Modelos.Cursada;
+import proyectogrupo6.Modelos.Materia;
+import proyectogrupo6.control.AlumnoData;
+import proyectogrupo6.control.Conexion;
+import proyectogrupo6.control.CursadaData;
+import proyectogrupo6.control.MateriaData;
+
 /**
- *
- * @author Jorge Romero
+ * @author Grupo 6 
+ *  Fernandez Valentina
+ *  Amieva Agustina
+ *  Romero Jorge
+ *  Gutierrez Manuel
  */
 public class CursadaView extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form CursadaView
      */
+    //------------------Constructor------------------
     public CursadaView() {
         initComponents();
+        modelo = new DefaultTableModel();
+        conexion = new Conexion();
+        cd = new CursadaData(conexion);
+        ad = new AlumnoData(conexion);
+        md = new MateriaData(conexion);
+        this.jbBorrar.setEnabled(false);
+        this.jbInscribir.setEnabled(false);
+        llenarJcbAlumno();
+        armarCabeceraJt();
+    }
+
+    //------------------ArmarCabeceraTabla------------------ 
+    //(esta parte tecnicamente no la necesitamos porque seteamos la table desde el design, pero de todas formas dejo como seria por codigo!)
+    private void armarCabeceraJt() {
+        //debe recibir la conexion por parametro!!
+        ArrayList<Object> c = new ArrayList();
+        c.add("ID");
+        c.add("NOMBRE");
+        c.add("AÑO");
+        for (Object it : c) {
+            modelo.addColumn(it);
+            
+        }
+        this.jtMaterias.setModel(modelo);
+    }
+
+    //------------------BorrarFilasTabla------------------
+    private void borrarFilasJt() {
+        int a = modelo.getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+    }
+
+    //------------------LlenarTabla------------------
+    private void llenarTable(ArrayList<Materia> materias) {
+        borrarFilasJt();
+        //modelo.setRowCount(0); tambien se pueden borrar las filas de esta manera
+        for (Materia m : materias) {
+            modelo.addRow(new Object[]{
+                m.getIdMateria(), m.getNombre(), m.getAnio()
+            });
+        }
+    }
+
+    //------------------LlenarTablaSegunRadioButton------------------
+    private void llenarTableIfJrb() {
+        if (this.jrbGroup.isSelected(jrbInscriptas.getModel())) {
+            llenarTable((ArrayList<Materia>) cd.obtenerMateriasInscriptas((Alumno) this.jcbAlumno.getSelectedItem()));
+        } else if (this.jrbGroup.isSelected(jrbNoInscriptas.getModel())) {
+            llenarTable((ArrayList<Materia>) cd.obtenerMateriasNoInscriptas((Alumno) this.jcbAlumno.getSelectedItem()));
+        }
     }
 
     /**
@@ -27,18 +92,19 @@ public class CursadaView extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jrbGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcbAlumno = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jrbInscriptas = new javax.swing.JRadioButton();
+        jrbNoInscriptas = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jtMaterias = new javax.swing.JTable();
+        jbInscribir = new javax.swing.JButton();
+        jbBorrar = new javax.swing.JButton();
+        jbSalir = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -52,22 +118,38 @@ public class CursadaView extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("ALUMNO");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(46, 53, 100, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 70, 20));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 53, 224, -1));
+        jcbAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbAlumnoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jcbAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 260, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("LISTADO DE MATERIAS");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 156, 28));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 156, 28));
 
-        jRadioButton1.setText("iNCRIPTAS");
-        jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, -1, -1));
+        jrbGroup.add(jrbInscriptas);
+        jrbInscriptas.setText("INSCRIPTAS");
+        jrbInscriptas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbInscriptasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jrbInscriptas, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, -1));
 
-        jRadioButton2.setText("NO INCRIPTAS");
-        jPanel1.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, -1, -1));
+        jrbGroup.add(jrbNoInscriptas);
+        jrbNoInscriptas.setText("NO INSCRIPTAS");
+        jrbNoInscriptas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbNoInscriptasActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jrbNoInscriptas, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 120, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtMaterias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -77,31 +159,50 @@ public class CursadaView extends javax.swing.JInternalFrame {
             new String [] {
                 "ID", "NOMBRE", "AÑO"
             }
-        ));
-        jTable1.setShowHorizontalLines(false);
-        jTable1.setShowVerticalLines(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setHeaderValue("ID");
-            jTable1.getColumnModel().getColumn(1).setHeaderValue("NOMBRE");
-            jTable1.getColumnModel().getColumn(2).setHeaderValue("AÑO");
-        }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 370, 163));
-
-        jButton1.setText("Inscribir");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
-
-        jButton2.setText("Borrar");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, -1, -1));
-
-        jButton3.setText("Salir");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 330, -1, -1));
+        jtMaterias.setShowHorizontalLines(false);
+        jtMaterias.setShowVerticalLines(false);
+        jtMaterias.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jtMaterias);
+        if (jtMaterias.getColumnModel().getColumnCount() > 0) {
+            jtMaterias.getColumnModel().getColumn(0).setResizable(false);
+            jtMaterias.getColumnModel().getColumn(1).setResizable(false);
+            jtMaterias.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 370, 160));
+
+        jbInscribir.setText("Inscribir");
+        jbInscribir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbInscribirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbInscribir, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
+
+        jbBorrar.setText("Borrar");
+        jbBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbBorrarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 90, -1));
+
+        jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 330, 90, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,24 +218,93 @@ public class CursadaView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    //------------------SalirButton------------------
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jbSalirActionPerformed
 
+    //------------------LlenarComboBoxAlumno------------------
+    private void llenarJcbAlumno() {
+        ArrayList<Alumno> alumnos = ad.obtenerAlumnos();
+        Collections.sort(alumnos, new Comparator<Alumno>() {
+            @Override
+            public int compare(Alumno t, Alumno t1) {
+                return t.getApellido().compareTo(t1.getApellido());
+            }
+        });
+        alumnos.forEach((a) -> {
+            jcbAlumno.addItem(a);
+        });
+    }
 
+    //------------------JcbAlumno------------------
+    private void jcbAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlumnoActionPerformed
+        llenarTableIfJrb();
+    }//GEN-LAST:event_jcbAlumnoActionPerformed
+
+    //------------------InscribirButton------------------
+    private void jbInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInscribirActionPerformed
+        if (jtMaterias.getSelectedRow() != -1) {
+            int id = (int) modelo.getValueAt(jtMaterias.getSelectedRow(), 0);
+            Alumno alumno = (Alumno) jcbAlumno.getSelectedItem();
+            Materia materia = md.obtenerMateriaXId(id);
+            Cursada c = new Cursada(materia, alumno, 0);
+            if (cd.agregarCursada(c)) {
+                JOptionPane.showMessageDialog(this, "Se ha realizado la inscripcion de " + alumno.getNombre() + " " + alumno.getApellido() + " en la materia " + md.obtenerMateriaXId(id).getNombre() + ".");
+                llenarTableIfJrb();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una materia para inscribirse!");
+        }
+    }//GEN-LAST:event_jbInscribirActionPerformed
+
+    //------------------RadioButtonInscriptas------------------
+    private void jrbInscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbInscriptasActionPerformed
+        llenarTableIfJrb();
+        this.jbBorrar.setEnabled(true);
+        this.jbInscribir.setEnabled(false);
+    }//GEN-LAST:event_jrbInscriptasActionPerformed
+
+    //------------------RadioButtonNoInscriptas------------------
+    private void jrbNoInscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbNoInscriptasActionPerformed
+        llenarTableIfJrb();
+        this.jbBorrar.setEnabled(false);
+        this.jbInscribir.setEnabled(true);
+    }//GEN-LAST:event_jrbNoInscriptasActionPerformed
+
+    //------------------BorrarButton--------------------
+    private void jbBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBorrarActionPerformed
+        if (this.jtMaterias.getSelectedRow() != -1) {
+            int id = (int) this.jtMaterias.getValueAt(jtMaterias.getSelectedRow(), 0);
+            Alumno alumno = (Alumno) this.jcbAlumno.getSelectedItem();
+            if (cd.borrarCursada(alumno, md.obtenerMateriaXId(id))) {
+                JOptionPane.showMessageDialog(this, "Se ha eliminado la materia " + md.obtenerMateriaXId(id).getNombre());
+                llenarTableIfJrb();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una materia para eliminarla!");
+        }
+    }//GEN-LAST:event_jbBorrarActionPerformed
+
+    //------------------Atributos------------------
+    private Conexion conexion;
+    private DefaultTableModel modelo;
+    private MateriaData md;
+    private AlumnoData ad;
+    private CursadaData cd;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbBorrar;
+    private javax.swing.JButton jbInscribir;
+    private javax.swing.JButton jbSalir;
+    private javax.swing.JComboBox<Alumno> jcbAlumno;
+    private javax.swing.ButtonGroup jrbGroup;
+    private javax.swing.JRadioButton jrbInscriptas;
+    private javax.swing.JRadioButton jrbNoInscriptas;
+    private javax.swing.JTable jtMaterias;
     // End of variables declaration//GEN-END:variables
 }
