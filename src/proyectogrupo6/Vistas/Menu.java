@@ -5,17 +5,24 @@
  */
 package proyectogrupo6.Vistas;
 
+import proyectogrupo6.control.Conexion;
+
 /**
- *
- * @author Jorge Romero
+ * @author Grupo 6 
+ *  Fernandez Valentina
+ *  Amieva Agustina
+ *  Romero Jorge
+ *  Gutierrez Manuel
  */
 public class Menu extends javax.swing.JFrame {
+    private Conexion conexion;
 
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
+        this.conexion = new Conexion();
     }
 
     /**
@@ -152,7 +159,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         jDPescritorio.removeAll();
         jDPescritorio.repaint();
-        MateriaView mv = new MateriaView();
+        MateriaView mv = new MateriaView(conexion);
         mv.setVisible(true);
         jDPescritorio.add(mv);
         jDPescritorio.moveToFront(mv);

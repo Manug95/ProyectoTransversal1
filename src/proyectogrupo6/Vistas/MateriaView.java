@@ -1,23 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectogrupo6.Vistas;
 
+import java.awt.Color;
+import javax.swing.JOptionPane;
+import proyectogrupo6.control.Conexion;
+import proyectogrupo6.control.MateriaData;
+import proyectogrupo6.Modelos.Materia;
 
 /**
- *
- * @author Jorge Romero
+ * @author Grupo 6 
+ *  Fernandez Valentina
+ *  Amieva Agustina
+ *  Romero Jorge
+ *  Gutierrez Manuel
  */
 public class MateriaView extends javax.swing.JInternalFrame {
-    
+
+    private MateriaData md = null;
+    private boolean numberOk;
 
     /**
      * Creates new form MateriaView
      */
-    public MateriaView() {
+    public MateriaView(Conexion conexion) {
         initComponents();
+        this.md = new MateriaData(conexion);
     }
 
     /**
@@ -41,54 +47,33 @@ public class MateriaView extends javax.swing.JInternalFrame {
         jBBorrar = new javax.swing.JButton();
         jBModificar = new javax.swing.JButton();
         jBCerrar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jBBuscar = new javax.swing.JButton();
+        jCBAnioMateria = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         jLMateria.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLMateria.setText("Materia");
-        jPanel1.add(jLMateria, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
 
         jLIdMateria.setText("IdMateria");
-        jPanel1.add(jLIdMateria, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 49, -1, -1));
 
         jLNombre.setText("Nombre");
-        jPanel1.add(jLNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 87, -1, -1));
 
+        jTFIdMateria.setToolTipText("Solo se admiten numeros.");
         jTFIdMateria.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTFIdMateriaFocusLost(evt);
             }
         });
-        jPanel1.add(jTFIdMateria, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 130, -1));
 
-        jTFNombre.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTFNombreFocusLost(evt);
-            }
-        });
-        jTFNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTFNombreActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTFNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 202, -1));
+        jTFNombre.setToolTipText("No se guarda una materia sin nombre.");
 
         jLAño.setText("Año");
-        jPanel1.add(jLAño, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
+        jCBActivo.setSelected(true);
         jCBActivo.setText("Activo");
-        jCBActivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBActivoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jCBActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, -1, -1));
 
         jBGuardar.setText("Guardar");
         jBGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -96,13 +81,22 @@ public class MateriaView extends javax.swing.JInternalFrame {
                 jBGuardarActionPerformed(evt);
             }
         });
-        jPanel1.add(jBGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, -1, -1));
 
         jBBorrar.setText("Borrar");
-        jPanel1.add(jBBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, -1, -1));
+        jBBorrar.setEnabled(false);
+        jBBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBBorrarActionPerformed(evt);
+            }
+        });
 
         jBModificar.setText("Actualizar");
-        jPanel1.add(jBModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, -1, -1));
+        jBModificar.setEnabled(false);
+        jBModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBModificarActionPerformed(evt);
+            }
+        });
 
         jBCerrar.setText("Cerrar");
         jBCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -110,36 +104,99 @@ public class MateriaView extends javax.swing.JInternalFrame {
                 jBCerrarActionPerformed(evt);
             }
         });
-        jPanel1.add(jBCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, -1, -1));
 
-        jButton1.setText("Buscar");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, -1));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jBBuscar.setText("Buscar");
+        jBBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jBBuscarActionPerformed(evt);
             }
         });
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 122, 107, -1));
+
+        jCBAnioMateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Primero", "Segundo", "Tercero", "Cuarto", "Quinto" }));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(140, 140, 140)
+                            .addComponent(jLMateria))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(28, 28, 28)
+                            .addComponent(jLAño)
+                            .addGap(43, 43, 43)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jCBAnioMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(63, 63, 63)
+                                    .addComponent(jCBActivo))))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(jBGuardar)
+                            .addGap(19, 19, 19)
+                            .addComponent(jBBorrar)
+                            .addGap(17, 17, 17)
+                            .addComponent(jBModificar)
+                            .addGap(18, 18, 18)
+                            .addComponent(jBCerrar)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLNombre)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLIdMateria)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTFIdMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(jBBuscar)))))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLMateria)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTFIdMateria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLIdMateria))
+                    .addComponent(jBBuscar))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLNombre))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCBAnioMateria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLAño)
+                    .addComponent(jCBActivo))
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jBGuardar)
+                    .addComponent(jBBorrar)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jBModificar)
+                        .addComponent(jBCerrar)))
+                .addContainerGap(47, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setBounds(500, 150, 370, 300);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jCBActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBActivoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCBActivoActionPerformed
 
     private void jBCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCerrarActionPerformed
         // TODO add your handling code here:
@@ -148,33 +205,113 @@ public class MateriaView extends javax.swing.JInternalFrame {
 
     private void jBGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarActionPerformed
         // TODO add your handling code here:
+        if (jTFNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacio");
+        } else {
+            String nombre = jTFNombre.getText();
+            int anio = jCBAnioMateria.getSelectedIndex() + 1;
+            Boolean activo = jCBActivo.isSelected();
+            Materia unaMateria = new Materia(nombre, anio, activo);
+            if (md.agregarMateria(unaMateria)) {
+                JOptionPane.showMessageDialog(this, "Materia agregada con éxito");
+                jTFIdMateria.setText(unaMateria.getIdMateria() + "");
+            } else {
+                JOptionPane.showMessageDialog(this, "La materia no se agrego");
+            }
+            limpiar();
+        }
     }//GEN-LAST:event_jBGuardarActionPerformed
 
     private void jTFIdMateriaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTFIdMateriaFocusLost
         // TODO add your handling code here:
+        try {
+            if (jTFIdMateria.getText().isEmpty()) {
+                numberOk = false;
+                jTFIdMateria.setForeground(null);
+                limpiar();
+                intercambiarBotones(false);
+            } else {
+                jTFIdMateria.setForeground(null);
+                Integer.parseInt(jTFIdMateria.getText());
+                numberOk = true;
+            }
+        } catch (Exception ex) {
+            numberOk = false;
+            jTFIdMateria.setForeground(Color.RED);
+            jTFIdMateria.requestFocus();
+        }
     }//GEN-LAST:event_jTFIdMateriaFocusLost
 
-    private void jTFNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFNombreActionPerformed
+    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTFNombreActionPerformed
+        if (numberOk) {
+            try {
+                Materia unaMateria = md.obtenerMateriaXId(Integer.parseInt(jTFIdMateria.getText()));
+                if (unaMateria != null) {
+                    jTFNombre.setText(unaMateria.getNombre());
+                    jCBAnioMateria.setSelectedIndex(unaMateria.getAnio() - 1);
+                    jCBActivo.setSelected(unaMateria.isActivo());
+                    intercambiarBotones(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No existe una materia con es Id");
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Id Inválido");
+            }
+        }
+    }//GEN-LAST:event_jBBuscarActionPerformed
 
-    private void jTFNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTFNombreFocusLost
+    private void jBModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModificarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTFNombreFocusLost
+        int id = -1;
+        id = Integer.parseInt(jTFIdMateria.getText());
+        String nom = jTFNombre.getText();
+        int anio = jCBAnioMateria.getSelectedIndex() + 1;
+        boolean estado = jCBActivo.isSelected();
+        Materia unaMateria = new Materia(id, nom, anio, estado);
+        if (md.modificarMateria(unaMateria)) {
+            JOptionPane.showMessageDialog(this, "Materia modificada con éxito");
+            limpiar();
+            intercambiarBotones(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "La materia no se modifico");
+        }
+    }//GEN-LAST:event_jBModificarActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void jBBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBorrarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        int id = -1;
+        id = Integer.parseInt(jTFIdMateria.getText());
+        if (md.borrarMateria(id)) {
+            JOptionPane.showMessageDialog(this, "Materia borrada con éxito");
+            limpiar();
+            intercambiarBotones(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "La materia no se borro");
+        }
+    }//GEN-LAST:event_jBBorrarActionPerformed
 
+    private void limpiar() {
+        this.jTFIdMateria.setText("");
+        this.jTFNombre.setText("");
+        this.jCBAnioMateria.setSelectedIndex(0);
+    }
+
+    private void intercambiarBotones(boolean b) {
+        jBGuardar.setEnabled(!b);
+        jCBActivo.setEnabled(!b);
+        jBBorrar.setEnabled(b);
+        jBModificar.setEnabled(b);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBBorrar;
+    private javax.swing.JButton jBBuscar;
     private javax.swing.JButton jBCerrar;
     private javax.swing.JButton jBGuardar;
     private javax.swing.JButton jBModificar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCBActivo;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jCBAnioMateria;
     private javax.swing.JLabel jLAño;
     private javax.swing.JLabel jLIdMateria;
     private javax.swing.JLabel jLMateria;
