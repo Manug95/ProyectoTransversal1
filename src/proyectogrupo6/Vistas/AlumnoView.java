@@ -1,21 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectogrupo6.Vistas;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import proyectogrupo6.Modelos.Alumno;
+import proyectogrupo6.control.AlumnoData;
+import proyectogrupo6.control.Conexion;
+
 /**
- *
- * @author Jorge Romero
+ * @author Grupo 6 
+ *  Fernandez Valentina
+ *  Romero Jorge
+ *  Gutierrez Manuel
  */
 public class AlumnoView extends javax.swing.JInternalFrame {
-
+    private AlumnoData aluData;
     /**
      * Creates new form AlumnoView
      */
-    public AlumnoView() {
+    public AlumnoView(Conexion con) {
         initComponents();
+        aluData = new AlumnoData(con);
+        
+        //fechas Maxima y Minima seleccionable
+        jdcFechNac.setMaxSelectableDate(new Date());
+        jdcFechNac.setMinSelectableDate(new Date(50, 0, 1));
+        
+        //se limpian todos los campos al abrirse la ventana
+        limpiarCampos();
+        
+        //al principio los botones nuevo y actualizar estan desactivados
+        jbNuevo.setEnabled(false);
+        jbActualizar.setEnabled(false);
     }
 
     /**
@@ -28,22 +46,22 @@ public class AlumnoView extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLAlumnoTitulo = new javax.swing.JLabel();
-        jBAgregar = new javax.swing.JButton();
+        jbGuardar = new javax.swing.JButton();
         jBBuscar = new javax.swing.JButton();
-        jBBorrar = new javax.swing.JButton();
-        jBModificar = new javax.swing.JButton();
+        jbNuevo = new javax.swing.JButton();
+        jbActualizar = new javax.swing.JButton();
         jLIdAlumno = new javax.swing.JLabel();
         jLNombre = new javax.swing.JLabel();
         jLApellido = new javax.swing.JLabel();
         jLFechNac = new javax.swing.JLabel();
         jLDni = new javax.swing.JLabel();
-        jCBActivo = new javax.swing.JCheckBox();
-        jTIdAlumno = new javax.swing.JTextField();
-        jTNombre = new javax.swing.JTextField();
-        jTApelldo = new javax.swing.JTextField();
-        jTDni = new javax.swing.JTextField();
-        jBCerrar = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jcbActivo = new javax.swing.JCheckBox();
+        jtIdAlumno = new javax.swing.JTextField();
+        jtNombre = new javax.swing.JTextField();
+        jtApelldo = new javax.swing.JTextField();
+        jtDni = new javax.swing.JTextField();
+        jbCerrar = new javax.swing.JButton();
+        jdcFechNac = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
         setIconifiable(true);
@@ -55,13 +73,13 @@ public class AlumnoView extends javax.swing.JInternalFrame {
         jLAlumnoTitulo.setText("Alumno");
         getContentPane().add(jLAlumnoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 0, -1, -1));
 
-        jBAgregar.setText("Agregar");
-        jBAgregar.addActionListener(new java.awt.event.ActionListener() {
+        jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBAgregarActionPerformed(evt);
+                jbGuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(jBAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 283, -1, -1));
+        getContentPane().add(jbGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
 
         jBBuscar.setText("Buscar");
         jBBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -69,89 +87,209 @@ public class AlumnoView extends javax.swing.JInternalFrame {
                 jBBuscarActionPerformed(evt);
             }
         });
-        getContentPane().add(jBBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 283, -1, -1));
+        getContentPane().add(jBBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
 
-        jBBorrar.setText("Borrar");
-        jBBorrar.addActionListener(new java.awt.event.ActionListener() {
+        jbNuevo.setText("Nuevo");
+        jbNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBBorrarActionPerformed(evt);
+                jbNuevoActionPerformed(evt);
             }
         });
-        getContentPane().add(jBBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 283, -1, -1));
+        getContentPane().add(jbNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
 
-        jBModificar.setText("Modificar");
-        getContentPane().add(jBModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(231, 283, -1, -1));
+        jbActualizar.setText("Actualizar");
+        jbActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbActualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, -1, -1));
 
         jLIdAlumno.setText("IdAlumno");
-        getContentPane().add(jLIdAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 51, -1, -1));
+        getContentPane().add(jLIdAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 51, -1, 20));
 
         jLNombre.setText("Nombre");
-        getContentPane().add(jLNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 82, -1, -1));
+        getContentPane().add(jLNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 20));
 
         jLApellido.setText("Apellido");
-        getContentPane().add(jLApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 113, -1, -1));
+        getContentPane().add(jLApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, 20));
 
         jLFechNac.setText("FechNac");
-        getContentPane().add(jLFechNac, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 143, -1, -1));
+        getContentPane().add(jLFechNac, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, 20));
 
         jLDni.setText("Dni");
-        getContentPane().add(jLDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 167, -1, -1));
+        getContentPane().add(jLDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, 20));
 
-        jCBActivo.setText("Activo");
-        getContentPane().add(jCBActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(253, 167, -1, -1));
-        getContentPane().add(jTIdAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(83, 48, 260, -1));
-        getContentPane().add(jTNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(83, 79, 260, -1));
-        getContentPane().add(jTApelldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(83, 110, 260, -1));
-        getContentPane().add(jTDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(83, 168, 100, -1));
+        jcbActivo.setText("Activo");
+        getContentPane().add(jcbActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, -1, -1));
+        getContentPane().add(jtIdAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 60, 20));
+        getContentPane().add(jtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 190, -1));
+        getContentPane().add(jtApelldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 190, -1));
 
-        jBCerrar.setText("Cerrar");
-        jBCerrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBCerrarActionPerformed(evt);
+        jtDni.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtDniFocusLost(evt);
             }
         });
-        getContentPane().add(jBCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(316, 283, -1, -1));
-        getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(83, 137, 168, -1));
+        getContentPane().add(jtDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 100, -1));
+
+        jbCerrar.setText("Cerrar");
+        jbCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbCerrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, -1, -1));
+        getContentPane().add(jdcFechNac, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 130, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
-        // TODO add your handling code here:
+        try{
+            Alumno alumno = aluData.obtenerAlumnoPorId(Integer.parseInt(jtIdAlumno.getText()));
+            
+            if(alumno != null){
+                jtNombre.setText(alumno.getNombre());
+                jtApelldo.setText(alumno.getApellido());
+                jtDni.setText(alumno.getDni()+"");
+                jcbActivo.setSelected(alumno.isActivo());
+                jdcFechNac.setDate(java.sql.Date.valueOf(alumno.getFechNac()));//Date del Package java.sql
+                
+                jbNuevo.setEnabled(true);
+                jbActualizar.setEnabled(true);
+                jbGuardar.setEnabled(false);
+            }else{
+                JOptionPane.showMessageDialog(this, "Alumno No Encontrado en la Base de Datos!");
+            }
+        }catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(this, "Legajo Incorrecto!");
+        }
     }//GEN-LAST:event_jBBuscarActionPerformed
 
-    private void jBBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBorrarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBBorrarActionPerformed
+    private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
+        limpiarCampos();
+        jbGuardar.setEnabled(true);
+        jbNuevo.setEnabled(false);
+        jbActualizar.setEnabled(false);
+        jtIdAlumno.setEnabled(true);
+    }//GEN-LAST:event_jbNuevoActionPerformed
 
-    private void jBCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCerrarActionPerformed
-        // TODO add your handling code here:
+    private void jbCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCerrarActionPerformed
         dispose();
-    }//GEN-LAST:event_jBCerrarActionPerformed
+    }//GEN-LAST:event_jbCerrarActionPerformed
 
-    private void jBAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarActionPerformed
-        // TODO add your handling code here:
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+        if(!hayCamposVacios()){
+            //obtener los datos de la vista
+            String nombre = jtNombre.getText();
+            String apellido = jtApelldo.getText();
+            long dni = Long.parseLong(jtDni.getText());
+            boolean activo = jcbActivo.isSelected();
+            
+            //obtener la fecha del JCalendar
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+            String fecha = formatoFecha.format(jdcFechNac.getDate());
+            LocalDate fechNac = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            
+            //lo guarda en la base de datos
+            Alumno alumno = new Alumno(nombre, apellido, fechNac, dni, activo);
+            if(aluData.agregarAlumno(alumno)){
+                JOptionPane.showMessageDialog(this, "Alumno Guardado Exitosamente!");
+                jtIdAlumno.setText(alumno.getIdAlumno()+"");
+                jbNuevo.setEnabled(true);
+            }else{
+                JOptionPane.showMessageDialog(this, "Error al Guardar el Alumno!");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Hola!");
+        }
         
-    }//GEN-LAST:event_jBAgregarActionPerformed
+    }//GEN-LAST:event_jbGuardarActionPerformed
 
+    private void jtDniFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtDniFocusLost
+        try{
+            long dni = Long.parseLong(jtDni.getText());
+        }catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(this, "El DNI Debe Ser un Número!");
+            jtDni.requestFocus();
+        }
+    }//GEN-LAST:event_jtDniFocusLost
+
+    private void jbActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarActionPerformed
+        jtIdAlumno.setEnabled(false);//no dejo que se modifique
+        
+        //captura los datos de todos los campos
+        /*1*/int id = Integer.parseInt(jtIdAlumno.getText());
+        long dni = -1;
+        try{
+            /*2*/dni = Long.parseLong(jtDni.getText());
+        }catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(this, "El Dni Debe Ser un Número!");
+            jtDni.requestFocus();
+        }
+        /*3*/String nombre = jtNombre.getText();
+        /*4*/String apellido = jtApelldo.getText();
+        //obtener la fecha del JCalendar
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+        String fecha = formatoFecha.format(jdcFechNac.getDate());
+        /*5*/LocalDate fechNac = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        /*6*/boolean activo = jcbActivo.isSelected();
+        
+        //crea un alumno con los datos modificados y lo guarda en la BD
+        Alumno alumno = new Alumno(id, nombre, apellido, fechNac, dni, activo);
+        if(aluData.modificarAlumno(alumno)){
+            JOptionPane.showMessageDialog(this, "Alumno Modificado con Éxito!");
+            jtIdAlumno.setEnabled(true);
+            jbActualizar.setEnabled(false);
+            jbGuardar.setEnabled(true);
+            limpiarCampos();
+        }else{
+            JOptionPane.showMessageDialog(this, "No se Pudo Modificar el Alumno!");
+        }
+    }//GEN-LAST:event_jbActualizarActionPerformed
+
+    /**
+     * Resetea todos los campos
+     */
+    private void limpiarCampos(){
+        jtIdAlumno.setText("");
+        jtNombre.setText("");
+        jtApelldo.setText("");
+        jtDni.setText("");
+        jcbActivo.setSelected(true);
+        jdcFechNac.setDate(null);
+    }
+    
+    /**
+     * Comprueba que no haya campos vacios
+     * @return true si hay algun campo vacio, de lo contrario retorna false
+     */
+    private boolean hayCamposVacios(){
+        String ape = jtApelldo.getText();
+        String nom = jtNombre.getText();
+        String dni = jtDni.getText();
+        
+        return ape.isEmpty() || nom.isEmpty() || dni.isEmpty() || jdcFechNac.getDate() == null;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBAgregar;
-    private javax.swing.JButton jBBorrar;
     private javax.swing.JButton jBBuscar;
-    private javax.swing.JButton jBCerrar;
-    private javax.swing.JButton jBModificar;
-    private javax.swing.JCheckBox jCBActivo;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLAlumnoTitulo;
     private javax.swing.JLabel jLApellido;
     private javax.swing.JLabel jLDni;
     private javax.swing.JLabel jLFechNac;
     private javax.swing.JLabel jLIdAlumno;
     private javax.swing.JLabel jLNombre;
-    private javax.swing.JTextField jTApelldo;
-    private javax.swing.JTextField jTDni;
-    private javax.swing.JTextField jTIdAlumno;
-    private javax.swing.JTextField jTNombre;
+    private javax.swing.JButton jbActualizar;
+    private javax.swing.JButton jbCerrar;
+    private javax.swing.JButton jbGuardar;
+    private javax.swing.JButton jbNuevo;
+    private javax.swing.JCheckBox jcbActivo;
+    private com.toedter.calendar.JDateChooser jdcFechNac;
+    private javax.swing.JTextField jtApelldo;
+    private javax.swing.JTextField jtDni;
+    private javax.swing.JTextField jtIdAlumno;
+    private javax.swing.JTextField jtNombre;
     // End of variables declaration//GEN-END:variables
 }

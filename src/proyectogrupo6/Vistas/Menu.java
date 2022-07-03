@@ -144,7 +144,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         jDPescritorio.removeAll();
         jDPescritorio.repaint();
-        AlumnoView av = new AlumnoView();
+        AlumnoView av = new AlumnoView(conexion);
         av.setVisible(true);
         jDPescritorio.add(av);
         jDPescritorio.moveToFront(av);
