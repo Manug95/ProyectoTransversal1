@@ -1,21 +1,56 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectogrupo6.Vistas;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import proyectogrupo6.Modelos.Alumno;
+import proyectogrupo6.Modelos.Cursada;
+import proyectogrupo6.Modelos.Materia;
+import proyectogrupo6.control.AlumnoData;
+import proyectogrupo6.control.Conexion;
+import proyectogrupo6.control.CursadaData;
+import proyectogrupo6.control.MateriaData;
+
 /**
- *
- * @author Jorge Romero
+ * @author Grupo 6 
+ *  Fernandez Valentina
+ *  Romero Jorge
+ *  Gutierrez Manuel
  */
 public class ListadoAlumnoMateriaView extends javax.swing.JInternalFrame {
-
+    private AlumnoData aluData;
+    private MateriaData mateData;
+    private CursadaData cursaData;
+    private DefaultTableModel modelo;
+    
     /**
      * Creates new form ListadoAlumnoMateriaView
      */
-    public ListadoAlumnoMateriaView() {
+    public ListadoAlumnoMateriaView(Conexion con) {
         initComponents();
+        aluData = new AlumnoData(con);
+        mateData = new MateriaData(con);
+        cursaData = new CursadaData(con);
+        modelo = new DefaultTableModel();
+        llenarComboMaterias();
+        armarCabeceraJt();
+    }
+    
+    //------------------ArmarCabeceraTabla------------------ 
+    //(esta parte tecnicamente no la necesitamos porque seteamos la table desde el design, pero de todas formas dejo como seria por codigo!)
+    private void armarCabeceraJt() {
+        //debe recibir la conexion por parametro!!
+        ArrayList<Object> c = new ArrayList();
+        c.add("ID");
+        c.add("APELLIDO Y NOMBRE");
+        c.add("NOTA");
+        for (Object it : c) {
+            modelo.addColumn(it);
+            
+        }
+        this.jtabAlumnos.setModel(modelo);
     }
 
     /**
@@ -30,10 +65,10 @@ public class ListadoAlumnoMateriaView extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jtabAlumnos = new javax.swing.JTable();
+        jbSalir = new javax.swing.JButton();
+        jcbMaterias = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -56,9 +91,7 @@ public class ListadoAlumnoMateriaView extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Materia");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtabAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -66,22 +99,33 @@ public class ListadoAlumnoMateriaView extends javax.swing.JInternalFrame {
                 {null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Nota"
+                "Id", "Nombre y Apellido", "Nota"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setShowHorizontalLines(false);
-        jTable1.setShowVerticalLines(false);
-        jScrollPane1.setViewportView(jTable1);
+        jtabAlumnos.setShowHorizontalLines(false);
+        jtabAlumnos.setShowVerticalLines(false);
+        jScrollPane1.setViewportView(jtabAlumnos);
 
-        jButton1.setText("Salir");
+        jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
+            }
+        });
+
+        jcbMaterias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbMateriasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,15 +136,15 @@ public class ListadoAlumnoMateriaView extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jLabel2)
-                                .addGap(47, 47, 47)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(60, 60, 60)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jcbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jbSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(61, 61, 61)
                         .addComponent(jLabel1)))
@@ -110,28 +154,80 @@ public class ListadoAlumnoMateriaView extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
-                .addComponent(jButton1)
+                    .addComponent(jcbMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(jbSalir)
                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jbSalirActionPerformed
+
+    private void jcbMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbMateriasActionPerformed
+        ArrayList<Alumno> alumnos = (ArrayList<Alumno>)cursaData.obtenerAlumnosInscriptos((Materia)jcbMaterias.getSelectedItem());
+        
+        llenarTable(alumnos);
+    }//GEN-LAST:event_jcbMateriasActionPerformed
+
+    /**
+     * Llena el ComboBox con las Materias
+     */
+    private void llenarComboMaterias(){
+        ArrayList<Materia> materias = (ArrayList<Materia>)mateData.obtenerMaterias();
+        
+        Collections.sort(materias, new Comparator<Materia>() {
+            @Override
+            public int compare(Materia t, Materia t1) {
+                return t.getNombre().compareTo(t1.getNombre());
+            }
+        });
+        
+        for(Materia mat : materias){
+            jcbMaterias.addItem(mat);
+        }
+    }
+    
+    //------------------BorrarFilasTabla------------------
+    private void borrarFilasJt() {
+        int a = modelo.getRowCount() - 1;
+        for (int i = a; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+    }
+
+    //------------------LlenarTabla------------------
+    private void llenarTable(ArrayList<Alumno> alumnos) {
+        borrarFilasJt();
+        //modelo.setRowCount(0); tambien se pueden borrar las filas de esta manera
+        for (Alumno alu : alumnos) {
+            double nota = cursaData.obtenerNotaDeAlumnoEnUnaMateria(alu.getIdAlumno(), ((Materia)jcbMaterias.getSelectedItem()).getIdMateria());
+            
+            if(nota == -1){
+                nota = 0;
+            }
+            
+            modelo.addRow(new Object[]{
+                alu.getIdAlumno(), alu.getApellido()+", "+alu.getNombre(), nota
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbSalir;
+    private javax.swing.JComboBox<Materia> jcbMaterias;
+    private javax.swing.JTable jtabAlumnos;
     // End of variables declaration//GEN-END:variables
 }

@@ -27,7 +27,7 @@ public class CursadaView extends javax.swing.JInternalFrame {
      * Creates new form CursadaView
      */
     //------------------Constructor------------------
-    public CursadaView() {
+    public CursadaView(Conexion conexion) {
         initComponents();
         modelo = new DefaultTableModel();
         conexion = new Conexion();
@@ -287,7 +287,6 @@ public class CursadaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbBorrarActionPerformed
 
     //------------------Atributos------------------
-    private Conexion conexion;
     private DefaultTableModel modelo;
     private MateriaData md;
     private AlumnoData ad;

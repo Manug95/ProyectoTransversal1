@@ -207,7 +207,7 @@ public class CursadaData {
     public List<Alumno> obtenerAlumnosInscriptos(Materia materia) {
 
         ArrayList<Alumno> alumnos = new ArrayList<>();
-        String sql = "SELECT alumno.idAlumno, nombre, dni "
+        String sql = "SELECT alumno.idAlumno, nombre, apellido, dni "
                    + "FROM cursada, alumno "
                    + "WHERE idMateria = ? AND cursada.idAlumno = alumno.idAlumno";
         
@@ -219,6 +219,7 @@ public class CursadaData {
             while (rs.next()) {
                 alumno = new Alumno();
                 alumno.setNombre(rs.getString("nombre"));
+                alumno.setApellido(rs.getString("apellido"));
                 alumno.setDni(rs.getInt("dni"));
                 alumno.setIdAlumno(rs.getInt("idalumno"));
                 alumnos.add(alumno);
@@ -306,6 +307,37 @@ public class CursadaData {
             JOptionPane.showMessageDialog(null, "Error: " + ex);
         } 
         return materiasNI;
+    }
+    
+    /**
+     * obtiene una nota
+     * @param idAlu id del ALUMNO del que se quiere la nota
+     * @param idMat id de la MATERIA donde tiene la nota el alumno
+     * @return la nota o -1 si ocurre algun error
+     */
+    public double obtenerNotaDeAlumnoEnUnaMateria(int idAlu, int idMat){
+        double nota = -1;
+        
+        String sql = "SELECT nota FROM cursada WHERE idAlumno = ? AND idMAteria = ?;";
+        
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setInt(1, idAlu);
+            ps.setInt(2, idMat);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                nota = rs.getDouble("nota");
+            }
+            
+            ps.close();
+        }catch (SQLException sqle){
+            JOptionPane.showMessageDialog(null, "No se Pudo Obtener la Nota!");
+        }
+        
+        return nota;
     }
 
 }

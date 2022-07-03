@@ -42,7 +42,7 @@ public class Menu extends javax.swing.JFrame {
         jMImateria = new javax.swing.JMenuItem();
         jMIcursada = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jmiConsultas = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMIsalir = new javax.swing.JMenuItem();
 
@@ -103,14 +103,14 @@ public class Menu extends javax.swing.JFrame {
         });
         jMinicio.add(jMenuItem1);
 
-        jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jMenuItem3.setText("Consultas");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jmiConsultas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jmiConsultas.setText("Consultas");
+        jmiConsultas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                jmiConsultasActionPerformed(evt);
             }
         });
-        jMinicio.add(jMenuItem3);
+        jMinicio.add(jmiConsultas);
         jMinicio.add(jSeparator1);
 
         jMIsalir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -169,7 +169,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         jDPescritorio.removeAll();
         jDPescritorio.repaint();
-        CursadaView cv = new CursadaView();
+        CursadaView cv = new CursadaView(conexion);
         cv.setVisible(true);
         jDPescritorio.add(cv);
         jDPescritorio.moveToFront(cv);
@@ -185,15 +185,15 @@ public class Menu extends javax.swing.JFrame {
         jDPescritorio.moveToFront(cnv);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void jmiConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiConsultasActionPerformed
         // TODO add your handling code here:
         jDPescritorio.removeAll();
         jDPescritorio.repaint();
-        ListadoAlumnoMateriaView lamv = new ListadoAlumnoMateriaView();
+        ListadoAlumnoMateriaView lamv = new ListadoAlumnoMateriaView(conexion);
         lamv.setVisible(true);
         jDPescritorio.add(lamv);
         jDPescritorio.moveToFront(lamv);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_jmiConsultasActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -240,8 +240,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu jMinicio;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenuItem jmiConsultas;
     // End of variables declaration//GEN-END:variables
 }
