@@ -67,11 +67,9 @@ public class AlumnoView extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLAlumnoTitulo.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLAlumnoTitulo.setText("Alumno");
-        getContentPane().add(jLAlumnoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 0, -1, -1));
 
         jbGuardar.setText("Guardar");
         jbGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -79,7 +77,6 @@ public class AlumnoView extends javax.swing.JInternalFrame {
                 jbGuardarActionPerformed(evt);
             }
         });
-        getContentPane().add(jbGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
 
         jBBuscar.setText("Buscar");
         jBBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -87,7 +84,6 @@ public class AlumnoView extends javax.swing.JInternalFrame {
                 jBBuscarActionPerformed(evt);
             }
         });
-        getContentPane().add(jBBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
 
         jbNuevo.setText("Nuevo");
         jbNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -95,7 +91,6 @@ public class AlumnoView extends javax.swing.JInternalFrame {
                 jbNuevoActionPerformed(evt);
             }
         });
-        getContentPane().add(jbNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, -1));
 
         jbActualizar.setText("Actualizar");
         jbActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -103,35 +98,24 @@ public class AlumnoView extends javax.swing.JInternalFrame {
                 jbActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(jbActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, -1, -1));
 
-        jLIdAlumno.setText("IdAlumno");
-        getContentPane().add(jLIdAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 51, -1, 20));
+        jLIdAlumno.setText("Legajo");
 
         jLNombre.setText("Nombre");
-        getContentPane().add(jLNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 20));
 
         jLApellido.setText("Apellido");
-        getContentPane().add(jLApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, 20));
 
         jLFechNac.setText("FechNac");
-        getContentPane().add(jLFechNac, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, 20));
 
         jLDni.setText("Dni");
-        getContentPane().add(jLDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, 20));
 
         jcbActivo.setText("Activo");
-        getContentPane().add(jcbActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, -1, -1));
-        getContentPane().add(jtIdAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 60, 20));
-        getContentPane().add(jtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 190, -1));
-        getContentPane().add(jtApelldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 190, -1));
 
         jtDni.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jtDniFocusLost(evt);
             }
         });
-        getContentPane().add(jtDni, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 100, -1));
 
         jbCerrar.setText("Cerrar");
         jbCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -139,30 +123,118 @@ public class AlumnoView extends javax.swing.JInternalFrame {
                 jbCerrarActionPerformed(evt);
             }
         });
-        getContentPane().add(jbCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, -1, -1));
-        getContentPane().add(jdcFechNac, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 130, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jLAlumnoTitulo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLIdAlumno)
+                        .addGap(38, 38, 38)
+                        .addComponent(jtIdAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jBBuscar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLNombre)
+                        .addGap(33, 33, 33)
+                        .addComponent(jtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLApellido)
+                        .addGap(33, 33, 33)
+                        .addComponent(jtApelldo, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLFechNac)
+                        .addGap(29, 29, 29)
+                        .addComponent(jdcFechNac, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLDni)
+                        .addGap(55, 55, 55)
+                        .addComponent(jtDni, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jcbActivo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jbGuardar)
+                        .addGap(27, 27, 27)
+                        .addComponent(jbNuevo)
+                        .addGap(25, 25, 25)
+                        .addComponent(jbActualizar)
+                        .addGap(19, 19, 19)
+                        .addComponent(jbCerrar)))
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLAlumnoTitulo)
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jLIdAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtIdAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBBuscar))
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtApelldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLFechNac, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jdcFechNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLDni, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addComponent(jcbActivo)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbGuardar)
+                    .addComponent(jbNuevo)
+                    .addComponent(jbActualizar)
+                    .addComponent(jbCerrar))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
-        try{
-            Alumno alumno = aluData.obtenerAlumnoPorId(Integer.parseInt(jtIdAlumno.getText()));
-            
-            if(alumno != null){
-                jtNombre.setText(alumno.getNombre());
-                jtApelldo.setText(alumno.getApellido());
-                jtDni.setText(alumno.getDni()+"");
-                jcbActivo.setSelected(alumno.isActivo());
-                jdcFechNac.setDate(java.sql.Date.valueOf(alumno.getFechNac()));//Date del Package java.sql
-                
-                jbNuevo.setEnabled(true);
-                jbActualizar.setEnabled(true);
-                jbGuardar.setEnabled(false);
-            }else{
-                JOptionPane.showMessageDialog(this, "Alumno No Encontrado en la Base de Datos!");
-            }
-        }catch(NumberFormatException nfe){
+        if(isInt(jtIdAlumno.getText())){
+            jtIdAlumno.setEnabled(false);//no dejo que se modifique
+        
+                Alumno alumno = aluData.obtenerAlumnoPorId(Integer.parseInt(jtIdAlumno.getText()));
+
+                if(alumno != null){
+                    jtNombre.setText(alumno.getNombre());
+                    jtApelldo.setText(alumno.getApellido());
+                    jtDni.setText(alumno.getDni()+"");
+                    jcbActivo.setSelected(alumno.isActivo());
+                    jdcFechNac.setDate(java.sql.Date.valueOf(alumno.getFechNac()));//Date del Package java.sql
+
+                    jbNuevo.setEnabled(true);
+                    jbActualizar.setEnabled(true);
+                    jbGuardar.setEnabled(false);
+                }else{
+                    JOptionPane.showMessageDialog(this, "Alumno No Encontrado en la Base de Datos!");
+                }
+        }else{
             JOptionPane.showMessageDialog(this, "Legajo Incorrecto!");
         }
     }//GEN-LAST:event_jBBuscarActionPerformed
@@ -208,45 +280,45 @@ public class AlumnoView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jtDniFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtDniFocusLost
-        try{
-            long dni = Long.parseLong(jtDni.getText());
-        }catch(NumberFormatException nfe){
+        if(!isLong(jtDni.getText())){
             JOptionPane.showMessageDialog(this, "El DNI Debe Ser un Número!");
             jtDni.requestFocus();
         }
     }//GEN-LAST:event_jtDniFocusLost
 
     private void jbActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarActionPerformed
-        jtIdAlumno.setEnabled(false);//no dejo que se modifique
-        
         //captura los datos de todos los campos
-        /*1*/int id = Integer.parseInt(jtIdAlumno.getText());
-        long dni = -1;
-        try{
-            /*2*/dni = Long.parseLong(jtDni.getText());
-        }catch(NumberFormatException nfe){
-            JOptionPane.showMessageDialog(this, "El Dni Debe Ser un Número!");
-            jtDni.requestFocus();
-        }
-        /*3*/String nombre = jtNombre.getText();
-        /*4*/String apellido = jtApelldo.getText();
-        //obtener la fecha del JCalendar
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
-        String fecha = formatoFecha.format(jdcFechNac.getDate());
-        /*5*/LocalDate fechNac = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        /*6*/boolean activo = jcbActivo.isSelected();
-        
-        //crea un alumno con los datos modificados y lo guarda en la BD
-        Alumno alumno = new Alumno(id, nombre, apellido, fechNac, dni, activo);
-        if(aluData.modificarAlumno(alumno)){
-            JOptionPane.showMessageDialog(this, "Alumno Modificado con Éxito!");
-            jtIdAlumno.setEnabled(true);
-            jbActualizar.setEnabled(false);
-            jbGuardar.setEnabled(true);
-            limpiarCampos();
+        if(!hayCamposVacios() && isLong(jtDni.getText())){
+            /*1*/int id = Integer.parseInt(jtIdAlumno.getText());
+            
+            /*2*/long dni = Long.parseLong(jtDni.getText());
+
+            /*3*/String nombre = jtNombre.getText();
+            /*4*/String apellido = jtApelldo.getText();
+            //obtener la fecha del JCalendar
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+            String fecha = formatoFecha.format(jdcFechNac.getDate());
+            /*5*/LocalDate fechNac = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            /*6*/boolean activo = jcbActivo.isSelected();
+
+            //crea un alumno con los datos modificados y lo guarda en la BD
+            Alumno alumno = new Alumno(id, nombre, apellido, fechNac, dni, activo);
+            if(aluData.modificarAlumno(alumno)){
+                JOptionPane.showMessageDialog(this, "Alumno Modificado con Éxito!");
+                jtIdAlumno.setEnabled(true);
+                jbActualizar.setEnabled(false);
+                jbGuardar.setEnabled(true);
+                jbNuevo.setEnabled(false);
+                limpiarCampos();
+            }else{
+                JOptionPane.showMessageDialog(this, "No se Pudo Modificar el Alumno!");
+            }
         }else{
-            JOptionPane.showMessageDialog(this, "No se Pudo Modificar el Alumno!");
+            if(hayCamposVacios()){
+                JOptionPane.showMessageDialog(this, "Hay Campos Vacios o Incorrectos!");
+            }
         }
+        
     }//GEN-LAST:event_jbActualizarActionPerformed
 
     /**
@@ -272,6 +344,35 @@ public class AlumnoView extends javax.swing.JInternalFrame {
         
         return ape.isEmpty() || nom.isEmpty() || dni.isEmpty() || jdcFechNac.getDate() == null;
     }
+    
+    /**
+     * comprueba que un String sea un int
+     * @param n es el String que se comprueeba
+     * @return true si es un int, false si no 
+     */
+    private boolean isInt(String n){
+        try{
+            int a = Integer.parseInt(n);
+            return true;
+        }catch(NumberFormatException nfe){
+            return false;
+        }
+    }
+    
+    /**
+     * comprueba que un String sea un long
+     * @param n es el String que se comprueeba
+     * @return true si es un long, false si no 
+     */
+    private boolean isLong(String n){
+        try{
+            long a = Long.parseLong(n);
+            return true;
+        }catch(NumberFormatException nfe){
+            return false;
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBBuscar;
