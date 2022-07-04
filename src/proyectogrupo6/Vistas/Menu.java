@@ -34,19 +34,16 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem2 = new javax.swing.JMenuItem();
         jDPescritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMinicio = new javax.swing.JMenu();
         jMIalumno = new javax.swing.JMenuItem();
         jMImateria = new javax.swing.JMenuItem();
         jMIcursada = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMICargaNotas = new javax.swing.JMenuItem();
         jmiConsultas = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMIsalir = new javax.swing.JMenuItem();
-
-        jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(6);
@@ -94,14 +91,14 @@ public class Menu extends javax.swing.JFrame {
         });
         jMinicio.add(jMIcursada);
 
-        jMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jMenuItem1.setText("Carga de Notas");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMICargaNotas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMICargaNotas.setText("Carga de Notas");
+        jMICargaNotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMICargaNotasActionPerformed(evt);
             }
         });
-        jMinicio.add(jMenuItem1);
+        jMinicio.add(jMICargaNotas);
 
         jmiConsultas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jmiConsultas.setText("Consultas");
@@ -175,15 +172,15 @@ public class Menu extends javax.swing.JFrame {
         jDPescritorio.moveToFront(cv);
     }//GEN-LAST:event_jMIcursadaActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMICargaNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMICargaNotasActionPerformed
         // TODO add your handling code here:
         jDPescritorio.removeAll();
         jDPescritorio.repaint();
-        CargaNotasView cnv = new CargaNotasView();
+        CargaNotasView cnv = new CargaNotasView(conexion);
         cnv.setVisible(true);
         jDPescritorio.add(cnv);
         jDPescritorio.moveToFront(cnv);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMICargaNotasActionPerformed
 
     private void jmiConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiConsultasActionPerformed
         // TODO add your handling code here:
@@ -233,13 +230,12 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDPescritorio;
+    private javax.swing.JMenuItem jMICargaNotas;
     private javax.swing.JMenuItem jMIalumno;
     private javax.swing.JMenuItem jMIcursada;
     private javax.swing.JMenuItem jMImateria;
     private javax.swing.JMenuItem jMIsalir;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenu jMinicio;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem jmiConsultas;

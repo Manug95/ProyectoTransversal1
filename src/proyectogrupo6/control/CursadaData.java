@@ -339,5 +339,29 @@ public class CursadaData {
         
         return nota;
     }
+    
+    public List<Cursada> obtenerCursadaXAlumno(Alumno alumno) {
+        Cursada cursada = null;
+        ArrayList<Cursada> cursadas = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM cursada WHERE idAlumno = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, alumno.getIdAlumno());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                cursada = new Cursada();
+                cursada.setId(rs.getInt("id"));
+                cursada.setNota(rs.getDouble("nota"));
+                cursada.setAlumno(alumno);
+                Materia materia = md.obtenerMateriaXId(rs.getInt("idMateria"));
+                cursada.setMateria(materia);
+                cursadas.add(cursada);
+            }            
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex);
+        }
+        return cursadas;
+    }
 
 }
