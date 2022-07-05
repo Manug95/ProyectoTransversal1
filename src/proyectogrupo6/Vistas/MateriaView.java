@@ -8,10 +8,10 @@ import proyectogrupo6.Modelos.Materia;
 
 /**
  * @author Grupo 6 
- *  Fernandez Valentina
- *  Amieva Agustina
- *  Romero Jorge
- *  Gutierrez Manuel
+ * Fernandez Valentina 
+ * Amieva Agustina 
+ * Romero Jorge 
+ * Gutierrez Manuel
  */
 public class MateriaView extends javax.swing.JInternalFrame {
 
@@ -195,7 +195,7 @@ public class MateriaView extends javax.swing.JInternalFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setBounds(500, 150, 370, 300);
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCerrarActionPerformed
@@ -263,31 +263,41 @@ public class MateriaView extends javax.swing.JInternalFrame {
 
     private void jBModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModificarActionPerformed
         // TODO add your handling code here:
-        int id = -1;
-        id = Integer.parseInt(jTFIdMateria.getText());
-        String nom = jTFNombre.getText();
-        int anio = jCBAnioMateria.getSelectedIndex() + 1;
-        boolean estado = jCBActivo.isSelected();
-        Materia unaMateria = new Materia(id, nom, anio, estado);
-        if (md.modificarMateria(unaMateria)) {
-            JOptionPane.showMessageDialog(this, "Materia modificada con éxito");
-            limpiar();
-            intercambiarBotones(false);
+        if (numberOk && !jTFNombre.getText().isEmpty()) {
+            int id = -1;
+            id = Integer.parseInt(jTFIdMateria.getText());
+            String nom = jTFNombre.getText();
+            int anio = jCBAnioMateria.getSelectedIndex() + 1;
+            boolean estado = jCBActivo.isSelected();
+            Materia unaMateria = new Materia(id, nom, anio, estado);
+            if (md.modificarMateria(unaMateria)) {
+                JOptionPane.showMessageDialog(this, "Materia modificada con éxito");
+                limpiar();
+                intercambiarBotones(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "La materia no se modifico");
+            }
+        } else if (jTFNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre vacio");
         } else {
-            JOptionPane.showMessageDialog(this, "La materia no se modifico");
+            JOptionPane.showMessageDialog(this, "Id invalido");
         }
     }//GEN-LAST:event_jBModificarActionPerformed
 
     private void jBBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBorrarActionPerformed
         // TODO add your handling code here:
-        int id = -1;
-        id = Integer.parseInt(jTFIdMateria.getText());
-        if (md.borrarMateria(id)) {
-            JOptionPane.showMessageDialog(this, "Materia borrada con éxito");
-            limpiar();
-            intercambiarBotones(false);
+        if (numberOk) {
+            int id = -1;
+            id = Integer.parseInt(jTFIdMateria.getText());
+            if (md.borrarMateria(id)) {
+                JOptionPane.showMessageDialog(this, "Materia borrada con éxito");
+                limpiar();
+                intercambiarBotones(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "La materia no se borro");
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "La materia no se borro");
+            JOptionPane.showMessageDialog(this, "Id invalido");
         }
     }//GEN-LAST:event_jBBorrarActionPerformed
 
