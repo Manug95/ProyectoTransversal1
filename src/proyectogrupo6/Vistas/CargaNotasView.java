@@ -6,6 +6,7 @@
 package proyectogrupo6.Vistas;
 
 import java.util.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectogrupo6.control.Conexion;
 import proyectogrupo6.Modelos.Alumno;
@@ -16,8 +17,11 @@ import proyectogrupo6.control.MateriaData;
 import proyectogrupo6.control.CursadaData;
 
 /**
- *
- * @author Jorge Romero
+ * @author Grupo 6 
+ * Fernandez Valentina 
+ * Amieva Agustina 
+ * Romero Jorge 
+ * Gutierrez Manuel
  */
 public class CargaNotasView extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo;
@@ -184,14 +188,18 @@ public class CargaNotasView extends javax.swing.JInternalFrame {
 
     private void jBGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarActionPerformed
         // TODO add your handling code here:
-        int filaSelected = jTMateriaNotas.getSelectedRow();
-        if (filaSelected != -1) {
-            Alumno unAlumno = (Alumno)jCBAlumnos.getSelectedItem();
-            Materia unaMateria = (Materia)modelo.getValueAt(filaSelected, 1);
-            double nota = Double.parseDouble((String)modelo.getValueAt(filaSelected, 2));
-            cd.actualizarNota(unAlumno, unaMateria, nota);
-            borrarFilasJT();
-            cargarTabla();
+        try {
+            int filaSelected = jTMateriaNotas.getSelectedRow();
+            if (filaSelected != -1) {
+                Alumno unAlumno = (Alumno) jCBAlumnos.getSelectedItem();
+                Materia unaMateria = (Materia) modelo.getValueAt(filaSelected, 1);
+                double nota = Double.parseDouble((String) modelo.getValueAt(filaSelected, 2));
+                cd.actualizarNota(unAlumno, unaMateria, nota);
+                borrarFilasJT();
+                cargarTabla();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar la nota");
         }
     }//GEN-LAST:event_jBGuardarActionPerformed
 
