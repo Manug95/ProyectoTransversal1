@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package proyectogrupo6.Vistas;
 
 import java.util.*;
@@ -187,16 +183,21 @@ public class CargaNotasView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarActionPerformed
-        // TODO add your handling code here:
         try {
             int filaSelected = jTMateriaNotas.getSelectedRow();
             if (filaSelected != -1) {
-                Alumno unAlumno = (Alumno) jCBAlumnos.getSelectedItem();
                 Materia unaMateria = (Materia) modelo.getValueAt(filaSelected, 1);
-                double nota = Double.parseDouble((String) modelo.getValueAt(filaSelected, 2));
-                cd.actualizarNota(unAlumno, unaMateria, nota);
-                borrarFilasJT();
-                cargarTabla();
+                
+                if(unaMateria != null){
+                    Alumno unAlumno = (Alumno) jCBAlumnos.getSelectedItem();
+                    double nota = Double.parseDouble((String) modelo.getValueAt(filaSelected, 2));
+                    cd.actualizarNota(unAlumno, unaMateria, nota);
+                    borrarFilasJT();
+                    cargarTabla();
+                }else{
+                    JOptionPane.showMessageDialog(this, "No se Puede Cambiar la Nota!");
+                }
+                
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al actualizar la nota");
@@ -204,12 +205,10 @@ public class CargaNotasView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBGuardarActionPerformed
 
     private void jCBAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBAlumnosActionPerformed
-        // TODO add your handling code here:
         cargarTabla();
     }//GEN-LAST:event_jCBAlumnosActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
-        // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jBSalirActionPerformed
 

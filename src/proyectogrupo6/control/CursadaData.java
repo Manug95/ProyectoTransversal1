@@ -288,10 +288,10 @@ public class CursadaData {
         
         ArrayList<Materia> materias = (ArrayList) obtenerMateriasInscriptas(alumno);
         ArrayList<Materia> materiasNI = new ArrayList<>();
-        int ind = 1;
+
         String sql = "SELECT idMateria " 
                    + "FROM materia "
-                   + "WHERE idMateria NOT IN (SELECT idMateria FROM cursada WHERE idAlumno = ?)";
+                   + "WHERE materia.activo = 1 AND idMateria NOT IN (SELECT idMateria FROM cursada WHERE idAlumno = ?)";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
