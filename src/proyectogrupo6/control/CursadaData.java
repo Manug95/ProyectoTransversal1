@@ -348,7 +348,7 @@ public class CursadaData {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, alumno.getIdAlumno());
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 cursada = new Cursada();
                 cursada.setId(rs.getInt("id"));
                 cursada.setNota(rs.getDouble("nota"));
